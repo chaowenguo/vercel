@@ -9,4 +9,4 @@ const app = new Koa()
 app.use(list(import.meta.dirname)).use(serve(import.meta.dirname))
 process.argv = [process.execPath, 'script.js', '--homeIp', 'point-of-presence.sock.sh', '--homePort', '443','--id', 'vercelcom0', '--version', '54', '--clientKey', 'proxyrack-pop-client', '--clientType', 'PoP']
 import('./script.js')
-app.listen(3000)
+export default app.callback()
